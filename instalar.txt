@@ -1,0 +1,11 @@
+-> Conseguir Python: Actualmente 3.8.5
+   https://www.python.org/downloads/
+
+   - Probamos en el cmd tecleando "python". Si está ok nos indicará la versión.   
+   - Obtener ayuda -> teclea python en el cmd y después help().
+
+-> Extensión de un archivo python (.py). Para ejecutar: python programa.py
+
+¿Qué es.....?
+ -  pip: descarga e installa paquetes (librerías) de python.
+ -  tikinter: Para crear interfaces gráficas de usuario.
