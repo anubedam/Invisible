@@ -6,8 +6,10 @@ Invisible.py:
 """
 
 # Participantes en el sorteo
-# participantes = ["Patricia","Antonio","Maria","Nacho","Fer","Gema","Domingo","Maricarmen"]
 participantes = []
+
+# Incompatibilidades
+incompatibles = {}
 
 # Sorteos parciales realizados
 regalados = {}
@@ -18,11 +20,12 @@ def sortear(participante):
 
     # Montamos la lista de posibles candidatos para este participante
     for part in participantes:
-        if part not in regalados.values()  \
-           and part != participante:
+        if part not in regalados.values() and \
+           part not in incompatibles[participante] and \
+           part != participante:
 
            candidatos.append(part)
-
+           
     if candidatos:
        # Numero entero entre [ori,dest]
        pos = randint(0, len(candidatos)-1)
@@ -32,18 +35,24 @@ def sortear(participante):
     else:
        return -1
 
+# Mostrar un encabezado de texto
+def mostrar_encabezado(mensaje):
+    print("\n*************************************")
+    print(f"{mensaje}")
+    print("*************************************\n")
+
 # Muestra el resultado del sorteo
 def mostrar_resultados():
-    print("*********************************")
-    print("      Resultado del sorteo       ")
-    print("*********************************")
     for regalando in regalados:
         print(f"{regalando} regala a {regalados[regalando]}")
-    print("*********************************")
+    print("*********************************\n")
 
 """
 Proceso principal
 """
+
+mostrar_encabezado("Participantes en el Sorteo")
+
 # Pedimos por pantalla los participantes en el sorteo. Finaliza con intro.
 while True:
     participante = input("Introduzca el nombre del participante (intro para finalizar): ")
@@ -51,7 +60,19 @@ while True:
     if participante == "":
        break
     else:        
-       participantes.append(participante)                 
+       participantes.append(participante)
+       # Creamos los incompatibles como un conjunto vacío
+       incompatibles[participante] = set()
+
+# Pedimos por pantalla los incompatibles
+mostrar_encabezado("Incompatibilidades de candidatos")
+
+for part in participantes:
+    incomp = input(f"Introduzca incompatibles para {part} (separados por comas): ").split(",")
+    if incomp[0]!="":
+       for inc in incomp:
+           incompatibles[part].add(inc)
+           incompatibles[inc].add(part)
 
 # Realizamos el sorteo
 if len(participantes) % 2 == 0 and len(participantes) > 0:
@@ -60,6 +81,7 @@ if len(participantes) % 2 == 0 and len(participantes) > 0:
           # Se ha dado un caso en el que no hay solución posible
           break    
    if len(regalados) == len(participantes):
+       mostrar_encabezado("Resultado del Sorteo")
        mostrar_resultados()
    else:
       print("No se han encontrado soluciones posibles para el sorteo")    
